@@ -8,35 +8,48 @@ from ui.widgets.lcars_widgets import LcarsText
 from ui.widgets.screen import LcarsScreen
 from ui.widgets.lcars_widgets import LcarsButton
 
+
 class ScreenAuthorize(LcarsScreen):
 
     def setup(self, all_sprites):
         all_sprites.add(LcarsBackgroundImage("assets/lcars_screen_2.png"),
                         layer=0)
 
-        all_sprites.add(LcarsGifImage("assets/gadgets/stlogorotating.gif", (103, 369), 50), 
-                        layer=0)        
-
-        all_sprites.add(LcarsText(colours.ORANGE, (270, -1), "AUTHORIZATION REQUIRED", 2),
+        all_sprites.add(LcarsGifImage("assets/gadgets/stlogorotating.gif",
+                        (103, 369), 50),
                         layer=0)
 
-        all_sprites.add(LcarsText(colours.BLUE, (330, -1), "ONLY AUTHORIZED PERSONNEL MAY ACCESS THIS TERMINAL", 1.5),
-                        layer=1)
+        all_sprites.add(LcarsText(colours.ORANGE, (270, -1),
+                        "AUTHORIZATION REQUIRED", 2),
+                        layer=0)
 
-        all_sprites.add(LcarsText(colours.BLUE, (360, -1), "TOUCH TERMINAL TO PROCEED", 1.5),
-                        layer=1)
-        
-        #all_sprites.add(LcarsText(colours.BLUE, (390, -1), "FAILED ATTEMPTS WILL BE REPORTED", 1.5),layer=1)
+        all_sprites.add(
+            LcarsText(
+                colours.BLUE, (330, -1),
+                "ONLY AUTHORIZED PERSONNEL MAY ACCESS THIS TERMINAL", 1.5),
+            layer=1)
 
+        all_sprites.add(
+            LcarsText(
+                colours.BLUE, (360, -1), "TOUCH TERMINAL TO PROCEED", 1.5),
+            layer=1)
 
-        all_sprites.add(LcarsButton(colours.GREY_BLUE, (320, 130), "1", self.num_1), layer=2)
-        all_sprites.add(LcarsButton(colours.GREY_BLUE, (370, 130), "2", self.num_2), layer=2)
-        all_sprites.add(LcarsButton(colours.GREY_BLUE, (320, 270), "3", self.num_3), layer=2)
-        all_sprites.add(LcarsButton(colours.GREY_BLUE, (370, 270), "4", self.num_4), layer=2)
-        all_sprites.add(LcarsButton(colours.GREY_BLUE, (320, 410), "5", self.num_5), layer=2)
-        all_sprites.add(LcarsButton(colours.GREY_BLUE, (370, 410), "6", self.num_6), layer=2)
-        all_sprites.add(LcarsButton(colours.GREY_BLUE, (320, 550), "7", self.num_7), layer=2)
-        all_sprites.add(LcarsButton(colours.GREY_BLUE, (370, 550), "8", self.num_8), layer=2)
+        all_sprites.add(LcarsButton(colours.GREY_BLUE, (320, 130), "1",
+                        self.num_1), layer=2)
+        all_sprites.add(LcarsButton(colours.GREY_BLUE, (370, 130), "2",
+                        self.num_2), layer=2)
+        all_sprites.add(LcarsButton(colours.GREY_BLUE, (320, 270), "3",
+                        self.num_3), layer=2)
+        all_sprites.add(LcarsButton(colours.GREY_BLUE, (370, 270), "4",
+                        self.num_4), layer=2)
+        all_sprites.add(LcarsButton(colours.GREY_BLUE, (320, 410), "5",
+                        self.num_5), layer=2)
+        all_sprites.add(LcarsButton(colours.GREY_BLUE, (370, 410), "6",
+                        self.num_6), layer=2)
+        all_sprites.add(LcarsButton(colours.GREY_BLUE, (320, 550), "7",
+                        self.num_7), layer=2)
+        all_sprites.add(LcarsButton(colours.GREY_BLUE, (370, 550), "8",
+                        self.num_8), layer=2)
 
         self.layer1 = all_sprites.get_sprites_from_layer(1)
         self.layer2 = all_sprites.get_sprites_from_layer(2)
@@ -61,8 +74,10 @@ class ScreenAuthorize(LcarsScreen):
         self.correct = 0
         self.pin_i = 0
         self.granted = False
-        for sprite in self.layer1: sprite.visible = True
-        for sprite in self.layer2: sprite.visible = False
+        for sprite in self.layer1:
+            sprite.visible = True
+        for sprite in self.layer2:
+            sprite.visible = False
 
     def handleEvents(self, event, fpsClock):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -71,8 +86,10 @@ class ScreenAuthorize(LcarsScreen):
 
         if event.type == pygame.MOUSEBUTTONUP:
             if (not self.layer2[0].visible):
-                for sprite in self.layer1: sprite.visible = False
-                for sprite in self.layer2: sprite.visible = True
+                for sprite in self.layer1:
+                    sprite.visible = False
+                for sprite in self.layer2:
+                    sprite.visible = True
                 Sound("assets/audio/enter_authorization_code.wav").play()
             elif (self.pin_i == len(str(self.pin))):
                 # Ran out of button presses
