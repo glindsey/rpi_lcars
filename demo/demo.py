@@ -6,9 +6,10 @@ from pygame.sprite import DirtySprite, LayeredDirty
 pygame.init()
 screenSurface = pygame.display.set_mode((600, 400))
 
+
 class PpuiImage(DirtySprite):
     """Image sprite"""
-    
+
     def __init__(self, imagepath):
         pygame.sprite.DirtySprite.__init__(self)
         self.image = pygame.image.load(imagepath).convert()
@@ -45,10 +46,9 @@ while pygame.display.get_init():
         if event.type == KEYUP:
             pygame.quit()
             break
-        
+
         if (event.type == MOUSEMOTION):
             # move button around as mouse moves (or touch-drag)
             button.rect.left = event.pos[0]
             button.rect.top = event.pos[1]
             button.dirty = 1
-

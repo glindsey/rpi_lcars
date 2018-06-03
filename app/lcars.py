@@ -9,7 +9,8 @@ DEV_MODE = True
 
 if __name__ == "__main__":
     firstScreen = ScreenAuthorize()
-    ui = UserInterface(firstScreen, RESOLUTION, UI_PLACEMENT_MODE, FPS, DEV_MODE)
+    ui = UserInterface(firstScreen, RESOLUTION, UI_PLACEMENT_MODE,
+                       FPS, DEV_MODE)
 
     while (True):
         ui.tick()

@@ -1,12 +1,12 @@
 """
 interpolator.py
- 
+
 Perform a simple interpolation between two points of any dimention, without
 the use of Numeric.
 2007 Michael Thomas Greer
- 
+
 Released to the Public Domain
- 
+
 """
 
 
@@ -43,11 +43,12 @@ class Interpolator(object):
       being at either end of the line and 1.0 being at the asymptote. (The
       location of the asymptote, or "middle", is modifiable.)
 
-      The final calculation is to modify each vector position by (step *factor).
+      The final calculation is to modify each vector position by
+      (step * factor).
 
     """
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def __init__(
         self,
         start=None,
@@ -61,13 +62,13 @@ class Interpolator(object):
         Create a new interpolator to produce timed vectors along a line.
 
         arguments
-          start   - The initial vector. If no vectors are specified the object is
-                    treated as a placeholder object and does absolutely nothing
-                    but return the two-dimentional vector (0, 0).
+          start   - The initial vector. If no vectors are specified the object
+                    is treated as a placeholder object and does absolutely
+                    nothing but return the two-dimentional vector (0, 0).
 
-          stop    - The final vector. If no final vector is specified the object
-                    is treated as a placeholder object and does absolutely nothing
-                    but return the 'start' vector.
+          stop    - The final vector. If no final vector is specified the
+                    object is treated as a placeholder object and does
+                    absolutely nothing but return the 'start' vector.
 
           seconds - The number of seconds you wish the interpolation to take.
 
@@ -79,31 +80,35 @@ class Interpolator(object):
           shape   - Modify the interpolation as non-linear.
 
                     First some quick information to explain:
-                     - The total time to traverse the line is constant (in other
-                       words, this function cannot take more or less 'seconds'
-                       worth of vectors than you specify).
-                     - For the same reason, the number of vectors produced by this
-                       function (for a given value of 'seconds') is constant.
+                     - The total time to traverse the line is constant (in
+                       other words, this function cannot take more or less
+                       'seconds' worth of vectors than you specify).
+                     - For the same reason, the number of vectors produced by
+                       this function (for a given value of 'seconds') is
+                       constant.
                      - Hence, the -speed- of a vector is defined wholly by the
                        distance between it the previously produced vector.
-                     - In a linear interpolation, the distance between vectors (or
-                       again, the speed of each vector) is constant; every vector
-                       has the same speed.
-                     - In a shaped interpolation, the speed of individual vectors
-                       is modified: some are faster and some are slower.
+                     - In a linear interpolation, the distance between vectors
+                       (or again, the speed of each vector) is constant; every
+                       vector has the same speed.
+                     - In a shaped interpolation, the speed of individual
+                       vectors is modified: some are faster and some are
+                       slower.
 
-                    The shape is the number of times greater than linear speed the
-                    middle vector travels.
+                    The shape is the number of times greater than linear speed
+                    the middle vector travels.
 
-                    A shape of 1.0 is a linear interpolation. A shape of 2.0 has
-                    slower vectors at the end and a vector in the middle traveling
-                    twice as fast as it would in a linear interpolation. A shape
-                    of 0.5 travels half as fast. There really isn't any upper-
-                    limit, but zero is the lower. You'll get a ValueError if you
-                    try any value less-than or equal-to zero.
+                    A shape of 1.0 is a linear interpolation. A shape of 2.0
+                    has slower vectors at the end and a vector in the middle
+                    traveling twice as fast as it would in a linear
+                    interpolation. A shape of 0.5 travels half as fast. There
+                    really isn't any upper limit, but zero is the lower. You'll
+                    get a ValueError if you try any value less than or equal to
+                    zero.
 
-          middle  - The location of the "middle vector" along the line, expressed
-                    as a value from 0.0 (at 'start') to 1.0 (at 'stop').
+          middle  - The location of the "middle vector" along the line,
+                    expressed as a value from 0.0 (at 'start') to 1.0 (at
+                    'stop').
 
         """
         self._sec = -1
@@ -136,15 +141,15 @@ class Interpolator(object):
             self.mins = [min(a, b) for a, b in zip(start, stop)]
             self._length = None
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def next(self):
         R"""
         Calculate the location of the next vector in the line.
 
         The 'start' vector cannot be a "next" vector. (This is actually rather
-        convenient if you think about it.) That said, if your interpolation is set
-        up right, the first "next" vector might actually be in the same location
-        as the 'start' vector...
+        convenient if you think about it.) That said, if your interpolation is
+        set up right, the first "next" vector might actually be in the same
+        location as the 'start' vector...
 
         Care is taken that the 'stop' vector is always the final vector.
 
@@ -178,8 +183,9 @@ class Interpolator(object):
                         factor = pow(k, self.shape - 1.0) * self.shape
 
                 else:
-                    # The final 5% of the line is calculated linearly to avoid any
-                    # 'jump' or 'snap' artifacts caused by FPU arithmetic errors.
+                    # The final 5% of the line is calculated linearly to avoid
+                    # any 'jump' or 'snap' artifacts caused by FPU arithmetic
+                    # errors.
                     if self.mid is not None:
                         self.diff = [
                             b - a for a, b in zip(self._pos, self.stop)]
@@ -206,12 +212,12 @@ class Interpolator(object):
             self._pos = self.stop
             return None
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def _get_pos(self):
         R"""Return the current vector's location."""
         return self._pos
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def _get_length(self):
         R"""
         Returns the length of the line. The line's length is not calculated
@@ -227,7 +233,7 @@ class Interpolator(object):
             self._length = sqrt(sum1)
         return self._length
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     pos = property(
         _get_pos,    doc='The location of the current vector. Read-only.')
     length = property(_get_length, doc='The length of the line. Read-only.')

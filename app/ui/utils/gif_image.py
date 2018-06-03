@@ -23,7 +23,7 @@ class GIFImage(object):
         self.reversed = False
 
     def get_rect(self):
-        return pygame.rect.Rect((0,0), self.image.size)
+        return pygame.rect.Rect((0, 0), self.image.size)
 
     def get_frames(self):
         image = self.image
@@ -50,11 +50,11 @@ class GIFImage(object):
         try:
             while 1:
                 try:
-                    duration = self.duration if self.duration else image.info["duration"]
-                except:
+                    duration = self.duration or image.info["duration"]
+                except Exception:
                     duration = 100
 
-                duration *= .001 #convert to milliseconds!
+                duration *= .001  # convert to milliseconds!
                 cons = False
 
                 x0, y0, x1, y1 = (0, 0) + image.size
@@ -85,7 +85,11 @@ class GIFImage(object):
                 else:
                     palette = base_palette
 
-                imgdata = image.tobytes() if (hasattr(image, "tobytes")) else image.tostring()
+                try:
+                    imgdata = image.tobytes()
+                except AttributeError:
+                    imgdata = image.tostring()
+
                 pi = pygame.image.fromstring(imgdata, image.size, image.mode)
                 pi.set_palette(palette)
                 if "transparency" in image.info:
@@ -146,19 +150,25 @@ class GIFImage(object):
 
     def rewind(self):
         self.seek(0)
+
     def fastforward(self):
         self.seek(self.length()-1)
 
     def get_height(self):
         return self.image.size[1]
+
     def get_width(self):
         return self.image.size[0]
+
     def get_size(self):
         return self.image.size
+
     def length(self):
         return len(self.frames)
+
     def reverse(self):
         self.reversed = not self.reversed
+
     def reset(self):
         self.cur = 0
         self.ptime = time.time()
@@ -173,32 +183,3 @@ class GIFImage(object):
         new.ptime = self.ptime
         new.reversed = self.reversed
         return new
-
-##def main():
-##    pygame.init()
-##    screen = pygame.display.set_mode((640, 480))
-##
-##    hulk = GIFImage("hulk.gif")
-##    football = GIFImage("football.gif")
-##    hulk2 = hulk.copy()
-##    hulk2.reverse()
-##    hulk3 = hulk.copy()
-##    hulk3.set_bounds(0, 2)
-##    spiderman = GIFImage("spiderman7.gif")
-##
-##    while 1:
-##        for event in pygame.event.get():
-##            if event.type == QUIT:
-##                pygame.quit()
-##                return
-##
-##        screen.fill((255,255,255))
-##        hulk.render(screen, (50, 0))
-##        hulk2.render(screen, (50, 150))
-##        hulk3.render(screen, (50, 300))
-##        football.render(screen, (200, 50))
-##        spiderman.render(screen, (200, 150))
-##        pygame.display.flip()
-##
-##if __name__ == "__main__":
-##    main()

@@ -134,5 +134,3 @@ class ScreenMain(LcarsScreen):
     def logoutHandler(self, item, event, clock):
         from screens.authorize import ScreenAuthorize
         self.loadScreen(ScreenAuthorize())
-
-
